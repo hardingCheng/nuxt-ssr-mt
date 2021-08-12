@@ -17,17 +17,18 @@
             placeholder="搜索商家或地点"
             @focus="focus"
             @blur="blur"
-            @input="input"/>
+            @input="input"
+          />
           <button class="el-button el-button--primary"><i class="el-icon-search"/></button>
           <dl
             v-if="isHotPlace"
             class="hotPlace">
             <dt>热门搜索</dt>
-<!--            <dd-->
-<!--              v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)"-->
-<!--              :key="idx">-->
-<!--              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{ item.name }}</a>-->
-<!--            </dd>-->
+            <dd
+              v-for="(item,idx) in hotPlace"
+              :key="idx">
+              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{ item }}</a>
+            </dd>
           </dl>
           <dl
             v-if="isSearchList"
@@ -35,7 +36,7 @@
             <dd
               v-for="(item,idx) in searchList"
               :key="idx">
-              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{ item.name }}</a>
+              <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{ item }}</a>
             </dd>
           </dl>
         </div>
@@ -83,8 +84,8 @@ export default {
     return {
       search:'',
       isFocus:false,
-      hotPlace:[],
-      searchList:[]
+      hotPlace:['火锅','火锅','火锅','火锅','火锅'],
+      searchList:['故宫','故宫','故宫','故宫','故宫',]
     }
   },
   computed:{
@@ -106,16 +107,16 @@ export default {
       },200)
     },
     input:_.debounce(async function(){
-      const self=this;
-      const city=self.$store.state.geo.position.city.replace('市','')
-      self.searchList=[]
-      const {data:{top}}=await self.$axios.get('/search/top',{
-        params:{
-          input:self.search,
-          city
-        }
-      })
-      self.searchList=top.slice(0,10)
+    //   const self=this;
+    //   const city=self.$store.state.geo.position.city.replace('市','')
+    //   self.searchList=[]
+    //   const {data:{top}}=await self.$axios.get('/search/top',{
+    //     params:{
+    //       input:self.search,
+    //       city
+    //     }
+    //   })
+    //   self.searchList=top.slice(0,10)
     },300)
   }
 }
