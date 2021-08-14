@@ -18,12 +18,19 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    'element-ui/lib/theme-chalk/index.css'
+    'element-ui/lib/theme-chalk/index.css',
+    '@/assets/css/main.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/element-ui'
+    {
+      src: '@/plugins/element-ui.js',
+      ssr: true
+    },
+    {
+      src:'@/plugins/axios.js'
+    }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,6 +53,17 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [/^element-ui/]
+    transpile: [/^element-ui/],
+    extend (config, ctx) {
+      if (ctx.Client) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    },
+    cache:false
   }
 }
